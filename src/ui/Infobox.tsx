@@ -30,9 +30,9 @@ export default styled(Infobox)`
 
     h1 {
         padding: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
+        background: rgba(36,49,67, 0.8);
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
         font-size: 16px;
         font-weight: 500;
         margin: 0;
@@ -51,11 +51,13 @@ export default styled(Infobox)`
 
     .description {
         font-size: 12px;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
         line-height: 16px;
         display: none;
         padding: 10px;
         margin: 0;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(36,49,67, 0.8);
 
         &.is-expanded {
             display: block;
