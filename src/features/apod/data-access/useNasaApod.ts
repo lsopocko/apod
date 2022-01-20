@@ -20,18 +20,19 @@ async function loadImage(src: string): Promise<null>{
   }
 
 export default () => {
-    const [response, setResponse] = useState<ApodResponse[]>();
+    const [pictureOfTheDay, setPictureOfTheDay] = useState<ApodResponse>();
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const request = async () => {
+    const getPictureOfTheDay = async () => {
         setIsLoading(true);
         try {
             const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=0s1xExjLXQxJ3QCjUwbQY3smuDjNHa6rm7bTqGL5&count=1');
             const data: ApodResponse[] = await response.json();
+            // Ensure not only endpoint response in there but also image is downloaded spinner will disapear when image is present, not just url
             await loadImage(data[0].url);
 
-            setResponse(data);
+            setPictureOfTheDay(data[0]);
         } catch (err: any) {
             setError(err.message || 'Unexpected Error!');
         } finally {
@@ -40,9 +41,9 @@ export default () => {
     };
 
     return {
-        response,
+        pictureOfTheDay,
         error,
         isLoading,
-        request
+        getPictureOfTheDay
     };
 };
