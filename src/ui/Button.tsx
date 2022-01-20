@@ -10,6 +10,10 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 13px;
 
+  &:active {
+
+    background: linear-gradient(0deg, rgba(50,66,90,1) 0%, rgba(36,49,67,1) 100%);
+  }
 `;
 
 export default Button;
