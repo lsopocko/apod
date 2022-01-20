@@ -1,7 +1,9 @@
 import { useCallback, useEffect } from "react"
 import styled from "styled-components";
 import Button from "../../../ui/Button";
+import Infobox from "../../../ui/Infobox";
 import Spinner from "../../../ui/Spinner";
+import useFavorites from "../data-access/useFavorites";
 import useNasaApod from "../data-access/useNasaApod";
 
 interface ApodBrowserProps {
@@ -9,38 +11,35 @@ interface ApodBrowserProps {
 }
 
 function ApodBrowser({ className }: ApodBrowserProps) {
-    const { request, isLoading, response } = useNasaApod();
+    const { getPictureOfTheDay, isLoading, pictureOfTheDay } = useNasaApod();
+    const { add } = useFavorites();
 
-    let imageUrl = response && response[0].url;
-    let prevImage = imageUrl;
+    let { url, title, explanation, date } = pictureOfTheDay || {};
 
     useEffect(() => {
-        request();
+        getPictureOfTheDay();
     }, []);
 
     const handleNextClick = useCallback(() => {
-        prevImage = imageUrl;
-        imageUrl = '';
-        request();
+        getPictureOfTheDay();
     }, []);
 
     const handleSaveClick = useCallback(() => {
-        console.log('save');
-    }, []);
+        add(pictureOfTheDay);
+    }, [pictureOfTheDay]);
 
     return (
         <div className={className}>
             <div className="viewport">
                 {isLoading && <Spinner className="spinner" />}
-                <img className={`${isLoading || imageUrl === '' ? 'fade' : ''}`} src={imageUrl} />
-                <img className="blur" src={imageUrl} />
-                <div className="description">
-                    { response&& response[0].explanation }
+                { (title && explanation && date) && <Infobox title={title} description={explanation} date={date} /> }
+                <img className={`${isLoading || url === '' ? 'fade' : ''}`} src={url} />
+                <img className="blur" src={url} />
+
+                <div className="buttons">
+                    <Button onClick={handleSaveClick} disabled={isLoading}>Zapisz</Button> 
+                    <Button onClick={handleNextClick} disabled={isLoading}>Nastepne</Button>
                 </div>
-            </div>
-            <div className="buttons">
-                <Button onClick={handleSaveClick} disabled={isLoading}>Zapisz</Button> 
-                <Button onClick={handleNextClick} disabled={isLoading}>Nastepne</Button>
             </div>
         </div>
     )
@@ -62,7 +61,7 @@ export default styled(ApodBrowser)`
         z-index: 20;
 
         &.fade {
-            opacity: 0.1;
+            opacity: 0;
         }
     }
 
@@ -86,24 +85,18 @@ export default styled(ApodBrowser)`
         align-items: center;
     }
 
-    .description {
-        font-size: 12px;
-        position: absolute;
-        color: #fff;
-        z-index: 30;
-        width: 90vh;
-        bottom: 100px;
-        margin: auto;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 5px;
-    }
-
     .spinner {
         position: absolute;
         top: calc(50% - 45px);
         left: calc(50% - 45px);
         z-index: 30;
+    }
+
+    ${Infobox} {
+        position: absolute;
+        z-index: 100;
+        top: 20px;
+        width: 50vw;
     }
 
     .buttons {
