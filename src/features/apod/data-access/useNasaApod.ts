@@ -1,5 +1,6 @@
 import { useState } from "react";
 import loadImage from "../../../util/loadImageAsync";
+import { ApodModel } from "../apod.model";
 import API_KEY from "./apiKey";
 
 interface ApodResponse {
@@ -12,8 +13,18 @@ interface ApodResponse {
   url: string;
 }
 
+const mapApodResponse = ({ date, explanation, hdurl, title, url}: ApodResponse): ApodModel => {
+  return {
+    date,
+    explanation,
+    hdurl,
+    url,
+    title
+  }
+}
+
 export const useNasaApod = () => {
-  const [pictureOfTheDay, setPictureOfTheDay] = useState<ApodResponse>();
+  const [pictureOfTheDay, setPictureOfTheDay] = useState<ApodModel>();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,11 +32,13 @@ export const useNasaApod = () => {
     setIsLoading(true);
     try {
       const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=1`);
-      const data: ApodResponse[] = await response.json();
-      // Ensure not only endpoint response in there but also image is downloaded so spinner will disapear when image is present, not just url
-      await loadImage(data[0].url);
+      const rawApods: ApodResponse[] = await response.json();
+      const mappedApods = rawApods.map(mapApodResponse);
 
-      setPictureOfTheDay(data[0]);
+      // Ensure not only endpoint response in there but also image is downloaded so spinner will disapear when image is present, not just url
+      await loadImage(mappedApods[0].url);
+
+      setPictureOfTheDay(mappedApods[0]);
     } catch (err: any) {
       setError(err.message || "Unexpected Error!");
     } finally {
