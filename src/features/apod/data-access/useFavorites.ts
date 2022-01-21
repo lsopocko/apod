@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export default () => {
-    const [favorites, setFavorites] = useState<any[]>([]);
+const storageKey = "apod";
 
-    const getFavorites = (): void => {
-        const storedFavorites = localStorage.getItem('apod');
+export const useFavorites = () => {
+  const [favorites, setFavorites] = useState<any[]>([]);
 
-        if (storedFavorites) {
-            setFavorites(JSON.parse(storedFavorites));
-        }
-    };
+  const getFavorites = (): void => {
+    const storedFavorites = localStorage.getItem(storageKey);
 
-    const add = (apod: any): void => {
-        const updatedFavorites = [...favorites, apod];
-        setFavorites(updatedFavorites);
-        localStorage.setItem('apod', JSON.stringify(updatedFavorites));
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
     }
+  };
 
-    useEffect(() => {
-        getFavorites();
-    }, [])
+  const add = (apod: any): void => {
+    const updatedFavorites = [...favorites, apod];
+    setFavorites(updatedFavorites);
+    localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
+  }
 
-    return {
-        favorites,
-        add,
-        getFavorites
-    };
+  useEffect(() => {
+    getFavorites();
+  }, [])
+
+  return {
+    favorites,
+    add,
+    getFavorites
+  };
 };

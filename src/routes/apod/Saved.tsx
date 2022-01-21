@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import useFavorites from "../../features/apod/data-access/useFavorites"
-import Gallery from "../../features/gallery/feature/Gallery";
+import { useFavorites } from "../../features/apod";
+import { Gallery } from "../../features/gallery";
 
-export default function() {
-    const { favorites, getFavorites } = useFavorites();
+const Saved = () => {
+  const { favorites, getFavorites } = useFavorites();
 
-    useEffect(() => {
-        getFavorites();
-    }, [])
+  useEffect(() => {
+    getFavorites();
+  }, [])
 
-    return (
-        <Gallery pictures={favorites}></Gallery>
-    )
+  return (
+    <Gallery pictures={favorites}></Gallery>
+  )
 }
+
+export default Saved;

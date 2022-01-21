@@ -1,114 +1,74 @@
-import { useCallback, useEffect } from "react"
 import styled from "styled-components";
-import Button from "../../../ui/Button";
-import Infobox from "../../../ui/Infobox";
-import Spinner from "../../../ui/Spinner";
-import useFavorites from "../data-access/useFavorites";
-import useNasaApod from "../data-access/useNasaApod";
+import { Button, Infobox, Spinner } from "../../../ui";
+import Apod from "./Apod";
 
 interface ApodBrowserProps {
-    className?: string;
+  className?: string;
+  onNext: () => void;
+  onSave: () => void;
+  url?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  isLoading: boolean;
 }
 
-function ApodBrowser({ className }: ApodBrowserProps) {
-    const { getPictureOfTheDay, isLoading, pictureOfTheDay } = useNasaApod();
-    const { add } = useFavorites();
+function ApodBrowser({ className, onNext, onSave, title, url, description, isLoading, date }: ApodBrowserProps) {
+  return (
+    <div className={className}>
+      {isLoading && <Spinner />}
+      {(title && description && date) && <Infobox title={title} description={description} date={date} />}
+      {url && <Apod url={url} isLoading={isLoading}></Apod>}
 
-    let { url, title, explanation, date } = pictureOfTheDay || {};
-
-    useEffect(() => {
-        getPictureOfTheDay();
-    }, []);
-
-    const handleNextClick = useCallback(() => {
-        getPictureOfTheDay();
-    }, []);
-
-    const handleSaveClick = useCallback(() => {
-        add(pictureOfTheDay);
-    }, [pictureOfTheDay]);
-
-    return (
-        <div className={className}>
-            <div className="viewport">
-                {isLoading && <Spinner className="spinner" />}
-                { (title && explanation && date) && <Infobox title={title} description={explanation} date={date} /> }
-                <img className={`${isLoading || url === '' ? 'fade' : ''}`} src={url} />
-                <img className="blur" src={url} />
-
-                <div className="buttons">
-                    <Button onClick={handleSaveClick} disabled={isLoading}>Zapisz</Button> 
-                    <Button onClick={handleNextClick} disabled={isLoading}>Nastepne</Button>
-                </div>
-            </div>
-        </div>
-    )
+      <div className="buttons">
+        <Button onClick={onSave} disabled={isLoading}>Zapisz</Button>
+        <Button onClick={onNext} disabled={isLoading}>Nastepne</Button>
+      </div>
+    </div>
+  )
 }
 
 export default styled(ApodBrowser)`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  align-items: center;
+
+  ${Apod} {
     width: 100vw;
     height: 100vh;
-    margin: auto;
+    z-index: 50;
+  }
 
-    img:not(.blur) {
-        max-height: calc(100vh - 30px);
-        max-width: 100vw;
-        display: block;
-        border-radius: 3px;
-        margin: auto;
-        opacity: 1;
-        transition: opacity 0.3s ease-in-out;
-        z-index: 20;
+  ${Spinner} {
+    position: absolute;
+    top: calc(50% - 45px);
+    left: calc(50% - 45px);
+    z-index: 60;
+  }
 
-        &.fade {
-            opacity: 0;
-        }
+  ${Infobox} {
+    position: absolute;
+    z-index: 100;
+    top: 20px;
+    width: 50vw;
+
+    @media (max-width: 768px) {
+      width: 98vw;
     }
+  }
 
-    img.blur {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        filter: blur(40px);
-        z-index: 10;
+  .buttons {
+    z-index: 100;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    Button:first-child {
+        margin-right: 5px;
     }
-
-    .viewport {
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-        position: relative;
-        align-items: center;
-    }
-
-    .spinner {
-        position: absolute;
-        top: calc(50% - 45px);
-        left: calc(50% - 45px);
-        z-index: 30;
-    }
-
-    ${Infobox} {
-        position: absolute;
-        z-index: 100;
-        top: 20px;
-        width: 50vw;
-    }
-
-    .buttons {
-        z-index: 100;
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        text-align: center;
-
-        Button:first-child {
-            margin-right: 5px;
-        }
-    }
+  }
 `;

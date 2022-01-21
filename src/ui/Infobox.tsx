@@ -1,28 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 
 interface InfoboxProps {
-    className?: string;
-    title: string;
-    description: string;
-    date: string;
+  className?: string;
+  title: string;
+  description: string;
+  date: string;
 }
 
 function Infobox({ className, title, description, date }: InfoboxProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-    const toggleDescription = useCallback(() => {
-        setIsExpanded(!isExpanded);
-    }, [isExpanded]);
+  const toggleDescription = useCallback(() => {
+    setIsExpanded(!isExpanded);
+  }, [isExpanded]);
 
-    let trimmedTitle = title.length > 36 ? `${title.substring(0, 36).trim()}...` : title;
+  let trimmedTitle = title.length > 33 ? `${title.substring(0, 33).trim()}...` : title;
 
-    return (
-        <div className={className}>
-            <h1 title={title} onClick={toggleDescription}><small>{ date }</small> { trimmedTitle } { isExpanded ? <>&laquo;</> : <>&raquo;</>}</h1>
-            <p className={`description ${isExpanded && 'is-expanded'}`}>{ description }</p>
-        </div>
-    )
+  return (
+    <div className={className}>
+      <h1 title={title} onClick={toggleDescription}><small>{date}</small> {trimmedTitle} {isExpanded ? <>&laquo;</> : <>&raquo;</>}</h1>
+      <p className={`description ${isExpanded && "is-expanded"}`}>{description}</p>
+    </div>
+  )
 }
 
 export default styled(Infobox)`

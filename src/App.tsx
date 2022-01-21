@@ -1,8 +1,12 @@
 import { Outlet } from "react-router";
+import { HamburgerMenu } from "./ui";
 
 function App() {
   return (
-    <Outlet />
+    <>
+      <HamburgerMenu />
+      <Outlet />
+    </>
   );
 }
 

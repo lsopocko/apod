@@ -1,21 +1,22 @@
-import styled from "styled-components"
+import React from "react";
+import styled from "styled-components";
 
 interface GalleryProps {
-    className?: string;
-    pictures: any[];
+  className?: string;
+  pictures: any[];
 }
 
-function Gallery({ className, pictures }: GalleryProps) {
-    return (
-        <div className={className}>
-            { pictures.map((picture, index) =>  
-                <div className="tile" key={`apod-${index}`}>
-                    <img src={picture.url} />
-                </div>) 
-            }
-        </div>
-    )
-}
+const Gallery = React.memo(({ className, pictures }: GalleryProps) => {
+  return (
+    <div className={className}>
+      {pictures.map((picture, index) =>
+        <div className="tile" key={`apod-${index}`}>
+          <img alt="Thumbnail" src={picture.url} />
+        </div>)
+      }
+    </div>
+  )
+});
 
 export default styled(Gallery)`
     display: grid;
