@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useFavorites, useNasaApod, ApodBrowser } from "../../features/apod";
-import Alert from "../../ui/Alert";
+import { Alert } from "../../ui";
 
 const Browse = () => {
   const { getPictureOfTheDay, isLoading, pictureOfTheDay, error } = useNasaApod();

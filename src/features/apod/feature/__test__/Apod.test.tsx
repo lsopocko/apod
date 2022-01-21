@@ -17,7 +17,6 @@ test("Renders astronomic picture of the day", () => {
 });
 
 test("Fades picture of the day if isLoading", () => {
-
   render(
     <Apod url={pictureUrl} isLoading={true}/>
   );

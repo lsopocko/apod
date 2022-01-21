@@ -16,7 +16,7 @@ const Alert = ({className, title, message}: AlertProps) => {
 }
 
 export default styled(Alert)`
-    background: #ff0000;
+    background: #9b0000;
     color: #fff;
     width: 300px;
     position: fixed;

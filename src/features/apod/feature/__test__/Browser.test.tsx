@@ -5,7 +5,6 @@ const nextSpy = jest.fn();
 const saveSpy = jest.fn();
 
 test("Renders astronomic picture of the day", () => {
-
   render(
     <Browser onNext={nextSpy} onSave={saveSpy} isLoading={false} />
   );

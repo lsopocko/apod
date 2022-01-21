@@ -28,7 +28,7 @@ export const useNasaApod = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const getPictureOfTheDay = async () => {
+  const getPictureOfTheDay = async (): Promise<void> => {
     setIsLoading(true);
     try {
       setError("");
@@ -36,7 +36,8 @@ export const useNasaApod = () => {
       const rawApods: ApodResponse[] = await response.json();
       const mappedApods = rawApods.map(mapApodResponse);
 
-      // Ensure not only endpoint response in there but also image is downloaded so spinner will disapear when image is present, not just url
+      // Ensure not only endpoint response in there but also image is 
+      // downloaded (and in browser cache) so spinner will disapear when image is present, not just url
       await loadImage(mappedApods[0].url);
 
       setPictureOfTheDay(mappedApods[0]);
