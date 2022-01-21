@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { ApodModel } from "../apod.model";
 
 const storageKey = "apod";
 
 export const useFavorites = () => {
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<ApodModel[]>([]);
 
   const getFavorites = (): void => {
     const storedFavorites = localStorage.getItem(storageKey);
@@ -13,7 +14,7 @@ export const useFavorites = () => {
     }
   };
 
-  const add = (apod: any): void => {
+  const add = (apod: ApodModel): void => {
     const updatedFavorites = [...favorites, apod];
     setFavorites(updatedFavorites);
     localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
