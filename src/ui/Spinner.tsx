@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 function Spinner({ className }: any) {
     return (
-        <div className={className}>
+        <div className={className} role="spinner">
             <div className="ring"></div>
             <div className="cover-ring"></div>
             <div className="spots">

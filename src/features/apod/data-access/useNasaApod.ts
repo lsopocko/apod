@@ -31,6 +31,7 @@ export const useNasaApod = () => {
   const getPictureOfTheDay = async () => {
     setIsLoading(true);
     try {
+      setError("");
       const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&count=1`);
       const rawApods: ApodResponse[] = await response.json();
       const mappedApods = rawApods.map(mapApodResponse);
@@ -40,7 +41,7 @@ export const useNasaApod = () => {
 
       setPictureOfTheDay(mappedApods[0]);
     } catch (err: any) {
-      setError(err.message || "Unexpected Error!");
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }

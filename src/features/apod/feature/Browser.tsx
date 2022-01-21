@@ -21,8 +21,8 @@ function ApodBrowser({ className, onNext, onSave, title, url, description, isLoa
       {url && <Apod url={url} isLoading={isLoading}></Apod>}
 
       <div className="buttons">
-        <Button onClick={onSave} disabled={isLoading}>Zapisz</Button>
-        <Button onClick={onNext} disabled={isLoading}>Nastepne</Button>
+        <Button role="saveBtn" onClick={onSave} disabled={isLoading}>Zapisz</Button>
+        <Button role="nextBtn" onClick={onNext} disabled={isLoading}>Nastepne</Button>
       </div>
     </div>
   )

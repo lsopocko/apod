@@ -18,7 +18,7 @@ function Infobox({ className, title, description, date }: InfoboxProps) {
   let trimmedTitle = title.length > 33 ? `${title.substring(0, 33).trim()}...` : title;
 
   return (
-    <div className={className}>
+    <div className={className} role="infobox">
       <h1 title={title} onClick={toggleDescription}><small>{date}</small> {trimmedTitle} {isExpanded ? <>&laquo;</> : <>&raquo;</>}</h1>
       <p className={`description ${isExpanded && "is-expanded"}`}>{description}</p>
     </div>
