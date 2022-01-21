@@ -3,7 +3,7 @@ import Apod from "../Apod";
 
 const pictureUrl = "/image.jpg";
 
-test("renders astronomic picture of the day", () => {
+test("Renders astronomic picture of the day", () => {
   render(
     <Apod url="/image.jpg" isLoading={false}/>
   );
@@ -16,7 +16,7 @@ test("renders astronomic picture of the day", () => {
   expect(crispImage).toHaveAttribute("src", pictureUrl)
 });
 
-test("fades picture of the day if isLoading", () => {
+test("Fades picture of the day if isLoading", () => {
 
   render(
     <Apod url={pictureUrl} isLoading={true}/>

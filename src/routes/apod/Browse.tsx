@@ -10,26 +10,28 @@ const Browse = () => {
 
   useEffect(() => {
     getPictureOfTheDay();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleNextClick = useCallback(() => {
     getPictureOfTheDay();
   }, [getPictureOfTheDay]);
 
   const handleSaveClick = useCallback(() => {
-    add(pictureOfTheDay);
+    if (pictureOfTheDay) {
+      add(pictureOfTheDay);
+    }
   }, [pictureOfTheDay, add]);
 
   return (
     <>
-      { error && <Alert title="Error" message="There was a problem when fetching APOD. Try again later."/>}
-      <ApodBrowser 
-        title={title} 
-        url={url} 
-        description={explanation} 
-        date={date} 
-        isLoading={isLoading} 
-        onNext={handleNextClick} 
+      {error && <Alert title="Error" message="There was a problem when fetching APOD. Try again later." />}
+      <ApodBrowser
+        title={title}
+        url={url}
+        description={explanation}
+        date={date}
+        isLoading={isLoading}
+        onNext={handleNextClick}
         onSave={handleSaveClick}
       ></ApodBrowser>
     </>

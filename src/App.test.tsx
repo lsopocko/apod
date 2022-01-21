@@ -8,7 +8,7 @@ function Testable() {
   )
 }
 
-test("renders route in outlet", () => {
+test("Renders route in outlet", () => {
   render(
     <MemoryRouter initialEntries={["/test"]}>
       <Routes>

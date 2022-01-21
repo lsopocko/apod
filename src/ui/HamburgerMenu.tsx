@@ -32,7 +32,7 @@ const HamburgerMenu = ({ className }: HamburgerMenuProps) => {
 
   return (
     <nav className={className}>
-      <span role="menuToggle" onClick={toggleMenu}>☰</span>
+      <span role="menu" onClick={toggleMenu}>☰</span>
 
       <ul className={`${isExpanded && "is-expanded"}`}>
         <li onClick={toggleMenu}><StyledNavLink to="/">Przegladaj</StyledNavLink></li>

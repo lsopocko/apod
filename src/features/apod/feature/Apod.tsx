@@ -8,7 +8,7 @@ interface ApodProps {
 
 function Apod({ className, isLoading, url }: ApodProps) {
   return (
-    <div className={className} role="astronomicPicture">
+    <div className={className} role="img">
       <img alt="Nasa APOD" className={`crisp ${isLoading || url === "" ? "fade" : ""}`} src={url} />
       <img alt="Blured background" className="blur" src={url} />
     </div>

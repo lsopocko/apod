@@ -1,5 +1,4 @@
-import { render, screen, act, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { render, screen } from "@testing-library/react";
 import Saved from "../Saved";
 
 const fakeStoredApods = [
@@ -24,18 +23,11 @@ beforeAll(() => {
 }) 
 
 test("Saved route renders gallery with saved pictures", async () => {
+  render(
+    <Saved />
+  );
 
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={["/zapisane"]}>
-        <Routes>
-            <Route path="/zapisane" element={<Saved />} />
-        </Routes>
-      </MemoryRouter>
-    );
-  });
-
-  const apods = screen.queryAllByAltText(/Thumbnail/);
+  const apods = await screen.findAllByAltText(/Thumbnail/);
 
   expect(apods[0]).toHaveAttribute("src", "fakeurl1.jpg");
   expect(apods[1]).toHaveAttribute("src", "fakeurl2.jpg");

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent,  } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import HamburgerMenu from "../HamburgerMenu";
 
@@ -14,10 +14,10 @@ test("Expands when toggle is clicked", () => {
       </MemoryRouter>
   );
 
-  const menuToggle = screen.getByRole(/menuToggle/);
-  const menuList = screen.getByText(/Przegladaj/).parentElement?.parentElement;
+  const menuToggle = screen.getByRole(/menu/);
+  const menuItem = screen.getByText(/Przegladaj/);
 
   fireEvent.click(menuToggle);
 
-  expect(menuList).toHaveClass("is-expanded");
+  expect(menuItem).toBeVisible();
 });

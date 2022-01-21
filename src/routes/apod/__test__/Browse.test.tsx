@@ -1,5 +1,4 @@
-import { render, screen, act, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Browse from "../Browse";
 
 jest.mock("../../../util/loadImageAsync", () => {
@@ -22,17 +21,11 @@ test("Browse route renders browser with random apod", async () => {
   fetchMock.resetMocks();
   fetchMock.mockResponseOnce(JSON.stringify(fakeApodResponse));
 
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-            <Route path="/" element={<Browse />} />
-        </Routes>
-      </MemoryRouter>
-    );
-  });
+  render(
+    <Browse />
+  );
 
-  const apod = screen.getByAltText(/Nasa APOD/);
+  const apod = await screen.findByAltText(/Nasa APOD/);
 
   expect(apod).toBeInTheDocument();
   expect(apod).toHaveAttribute("src", "https://apod.nasa.gov/apod/image/9701/sn1987ares_hst.jpg");
@@ -43,26 +36,18 @@ test("Gets next random image when next button is clicked", async () => {
   fetchMock.resetMocks();
   fetchMock.mockResponseOnce(JSON.stringify(fakeApodResponse));
 
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-            <Route path="/" element={<Browse />} />
-        </Routes>
-      </MemoryRouter>
-    );
-  });
+  render(
+    <Browse />
+  );
 
   fetchMock.resetMocks();
   fetchMock.mockResponseOnce(JSON.stringify([{ ...fakeApodResponse[0], url: "https://apod.nasa.gov/apod/image/100/sn1987ares_hst.jpg"}]));
 
-  const nextBtn = screen.getByRole(/nextBtn/);
+  const nextBtn = await screen.findByRole(/nextBtn/);
 
-  await act(async () => {
-    await fireEvent.click(nextBtn);
-  });
+  await fireEvent.click(nextBtn);
 
-  const apod = screen.getByAltText(/Nasa APOD/);
+  const apod = await screen.findByAltText(/Nasa APOD/);
 
   expect(apod).toBeInTheDocument();
   expect(apod).toHaveAttribute("src", "https://apod.nasa.gov/apod/image/100/sn1987ares_hst.jpg");
@@ -72,17 +57,11 @@ test("Stores image in favorites when save button is clicked", async () => {
   fetchMock.resetMocks();
   fetchMock.mockResponseOnce(JSON.stringify(fakeApodResponse));
 
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-            <Route path="/" element={<Browse />} />
-        </Routes>
-      </MemoryRouter>
-    );
-  });
+  render(
+    <Browse />
+  );
 
-  const saveBtn = screen.getByRole(/saveBtn/);
+  const saveBtn = await screen.findByRole(/saveBtn/);
   fireEvent.click(saveBtn);
 
   const savedPictures = localStorage.getItem("apod");
@@ -95,16 +74,10 @@ test("Shows error if no response from backend", async () => {
   fetchMock.resetMocks();
   fetchMock.mockResponseOnce("", { status: 500 });
 
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Routes>
-            <Route path="/" element={<Browse />} />
-        </Routes>
-      </MemoryRouter>
-    );
-  });
+  render(
+    <Browse />
+  );
 
-  const error = screen.getByText(/Error/);
+  const error = await screen.findByText(/Error/);
   expect(error).toBeInTheDocument();
 });

@@ -7,7 +7,7 @@ const Saved = () => {
 
   useEffect(() => {
     getFavorites();
-  }, [])
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Gallery pictures={favorites}></Gallery>
